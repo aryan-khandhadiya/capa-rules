@@ -1,0 +1,45 @@
+rule:
+  meta:
+    name: target services for ransomware
+    namespace: impact/inhibit-system-recovery
+
+    authors:
+      - Aryan Khandhadiya
+
+    description: detects opening handles to multiple services commonly targeted by ransomware
+
+    scopes:
+      static: function
+      dynamic: span of calls
+
+    att&ck:
+      - Impact::Service Stop [T1489]
+
+    references:
+      - https://github.com/netskopeoss/NetskopeThreatLabsIOCs/blob/main/Malware/BlackMatter/IOCs/README.md
+
+    examples:
+      - 567e2d106495642bf57458fbf6cb7670c21edcca5b27724cfd84c0ff7a2756bc:0x401460
+
+  features:
+    - and:
+      - api: advapi32.OpenService
+
+      - 2 or more:
+        - substring: "agntsvc"
+        - substring: "dbeng50"
+        - substring: "dbsnmp"
+        - substring: "encsvc"
+        - substring: "isqlplussvc"
+        - substring: "memtas"
+        - substring: "mepocs"
+        - substring: "mydesktopqos"
+        - substring: "mydesktopservice"
+        - substring: "ocautoupds"
+        - substring: "ocomm"
+        - substring: "ocssd"
+        - substring: "sqbcoreservice"
+        - substring: "synctime"
+        - substring: "tbirdconfig"
+        - substring: "veeam"
+        - substring: "xfssvccon"
